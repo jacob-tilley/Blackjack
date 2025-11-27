@@ -3,7 +3,7 @@ FILENAME = "money.txt"
 def read_money():
     with open(FILENAME, "r") as infile:
         money = infile.readlines()
-        return int(money[0])
+        return float(money[0])
     
 def write_money(money_amount):
     with open(FILENAME, "w", newline="") as outfile:
