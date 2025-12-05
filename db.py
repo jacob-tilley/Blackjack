@@ -1,9 +1,14 @@
 FILENAME = "money.txt"
 
 def read_money():
-    with open(FILENAME, "r") as infile:
-        money = infile.readlines()
-        return float(money[0])
+    try:
+        with open(FILENAME, "r") as infile:
+            money = infile.readlines()
+            return float(money[0])
+    except FileNotFoundError:
+        print("Couldn't find money file! creating new one with 100 dollars.")
+        money = 100
+        return float(money)
     
 def write_money(money_amount):
     with open(FILENAME, "w", newline="") as outfile:
