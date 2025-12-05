@@ -44,31 +44,45 @@ def main():
     suits = ["Clubs", "Spades", "Diamonds", "Hearts"]
     ranks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"]
     values = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-    money = db.read_money()
     while True:
+        money = db.read_money()
+        hit_or_stand = ""
         dealer_value = 0
+        player_value = 0
         bet = get_bet(money)
         deck = create_deck(suits, ranks, values)
         player_hand = []
         dealer_hand = []
-        for i in range(0, 2):
+        for i in range(2):
             player_hand.append(deal_card(deck))
-        for i in range(0, 2):
+        for i in range(1):
             dealer_hand.append(deal_card(deck))
 
-        for i in dealer_hand[0]:
-            print(f"Dealer's show card:\n{i[1]} of {i[0]}")
+        #display and deal hands
+        for i in dealer_hand:
+            print(f"\nDealer's show card:\n{i[1]} of {i[0]}\n")
+        for i in range(1):
+            dealer_hand.append(deal_card(deck))
+        print("Player's hand:")
         for i in player_hand:
             print(f"{i[1]} of {i[0]}")
-        hit_or_stand = input("Would you like to hit or stand? (hit/stand): ")
-        if hit_or_stand.lower() == "hit":
-            hit(player_hand, deck)
-        elif hit_or_stand == "stand":
-            for suit, rank, value in dealer_hand:
-                while dealer_value < 17:
-                    dealer_value += value
-        print(dealer_value)
-        print(dealer_hand)
+
+        while True:
+            
+            hit_or_stand = input("\nWould you like to hit or stand? (hit/stand): ")
+            if hit_or_stand.lower() == "hit":
+                hit(player_hand, deck)
+                print("Player's hand:")
+                for i in player_hand:
+                    print(f"{i[1]} of {i[0]}")
+            elif hit_or_stand == "stand":
+                if dealer_value <= 17:
+                    for suit, rank, value in dealer_hand:
+                        dealer_value += value
+                new_card = hit(dealer_hand, deck)
+                dealer_hand.append(new_card)
+            print(dealer_value)
+            print(dealer_hand)
         
 
 if __name__ == "__main__":
